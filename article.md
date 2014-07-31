@@ -22,6 +22,8 @@ To understand what a MARCspec represents one must have a basic knowledge on the 
 
 Machine-Readable Cataloguing (MARC) is a document based key-value exchange format for bibliographic and other library related data. A MARC record consists of three main sections: the leader, the directory, and the variable fields with the data content. There are two kinds of (variable) fields: (variable) control fields and (variable) data fields. The term 'fixed field' stands for fields whose length does not vary like the leader and some of the control fields. The field content in the the fixed fields can be accessed through its character position or character range. Only data fields are divided into subfields. Subfields can also be contextualized through indicators. There is an indicator 1 and an indicator 2 for all data fields, both are optional. For a deeper explanation of MARC see [8] and [9].
 
+![MARC structure](images/marc_structure.jpg)
+
 A MARCspec is a reference to field data of a MARC record and it is very much like XPath for XML. With MARCspec one can reference data on different levels of a MARC record defined through the fields, character positions, subfields and indicators.
 
 
