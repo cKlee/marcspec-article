@@ -63,7 +63,7 @@ The character '.' in this MARCspec must be interpreted as a wildcard for any all
 
 is then a reference to the data elements in all fields beginning with '3'.
 
-While MARC 21 does only allow digits with the range 001–999 for field tags, for conformity to ISO 2709 [10] MARCspec allows alphabetic characters too. More precisely the field tag may consist of ASCII numeric characters (decimal integers 0-9) and/or ASCII alphabetic characters (uppercase or lowercase, but not both) or the character '.'.
+While MARC 21 does only allow digits with the range 001–999 for field tags, for conformity to ISO 2709 [10] MARCspec allows alphabetic characters too. More precisely the field tag may consist of ASCII numeric characters (decimal integers 0-9) and/or ASCII alphabetic characters (uppercase or lowercase, but not both) or the character '.'. A special field tag is 'LDR' for the leader.
 
 Together with spec for the field tag it is possible to reference specific repetitions of fields like with the MARCspec
 
@@ -179,6 +179,77 @@ k => 1
 
 This interpretation makes it possible to specify a substring beginning at the end of the string.
 
+### Reference to contextualized data
+
+Contents in MARC can be pretty hard to understand. One must look up different data elements at different locations to interpret the content depending on the values of these data elements. You can say, the content is contextualized.
+
+One way, how the content gets contextualized in data fields, is through indicators . Therefore MARCspec allows specifying the indicator 1 and 2 like in the following example
+
+```
+245_10$a
+```
+
+(see MARCspec specification [6] for a deeper explanation of the syntax of indicators).
+
+Another way, how content gets contextualized, is through coded data. Although coded data occur most frequently in the leader, directory, and variable control fields, any field or subfield may be defined for coded-data elements. [11]
+
+To embrace this fact, MARCspec introduces sub-specs (subSpec), a method to check for contextualization. A subSpec is enclosed with the characters '{' and '}' and consists of one or more sets of sub-terms (subTerm) (the left and the right subTerm) plus an operator.
+
+Here is a simple example for a subSpec
+
+```
+008/18{LDR/6=\t}
+```
+
+You can read this MARCspec like: "Reference the substring with the index position '18' of the content of field '008', if the substring with index position '6' of the leader content equals the string 't'".
+
+The idea behind subSpecs is to validate the expression stated in the subSpec as either true or false. Depending on the validation, the preceding spec is used to reference data or not. There are different operators to build these expressions:
+
+| operator symbol | operator meaning |
+|:---------------:|:----------------:|
+| =               | equal            |
+| !=              | unequal          |
+| ~               | includes         |
+| !~              | not includes     |
+| !               | not exists       |
+| ?               | exists           |
+
+Every subTerm of a subSpec can be either a MARCspec or a comparison-string (comparisonString). ComparisonStrings are preceded by the character '\' and have some requirements towards escaping of special characters (see MARCspec specification [6] for a deeper explanation of comparisonStrings).
+
+Furthermore expressions in subSpecs can be chained through the character '|' ( as a symbol for the boolean OR) and multiple subSpecs can be repeated one after another (interpreted as the boolean AND).
+
+Here are two examples for alternative expressions and repeated subSpecs
+
+```
+245$b{007/0=\a|007/0=\t}
+
+245$b{007/0=\a}{007/0=\t}
+```
+
+The content in subfield 'b' of field '245' only gets referenced if, in the first example one of the expressions in the subSpec gets validated as true and in the second example both expressions in the subSpecs are validated as true.
+
+SubSpecs need some further explanation. In the simple subSpec example above two strings are compared to each other. One is referenced by a MARCspec, the other is given directly. Let's take another subSpec example:
+
+```
+020$a{007/0=\a}
+```
+
+This MARCspec can be read like: "Reference content of subfield 'a' of field '020', if substring with index position '0' of field '007' equals the string 'a'".
+
+Now, field '007' is a repeatable field. So potentially there are more then one pair of strings to be compared. Let's say the field '007' is repeated once and the two substrings having the index position '0' are 'a' and 'b'. The interpretation of subSpecs then works like if we write 
+
+```
+020$a{007[0]/0=\a|007[1]/0=\a}
+```
+
+or more clear with the substrings instead of MARCspecs
+
+```
+020$a{\a=\a|\b=\a}
+```
+
+In this case the MARCspec is used to reference data, because the expression 'a = a' is true.
+
 
 
 ## References
@@ -212,3 +283,6 @@ This interpretation makes it possible to specify a substring beginning at the en
 
 [10]: #10 
 \[10] http://en.wikipedia.org/wiki/ISO_2709
+
+[11]: #11 
+\[11] http://www.loc.gov/marc/96principl.html#nine
