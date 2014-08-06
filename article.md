@@ -1,5 +1,9 @@
 # MARCspec - a common MARC record path language
 
+## Abstract
+
+MARCspec is a specification for referencing data in MARC records. MARCspecs are encoded as string and the purpose of the specification is it to unify the way how MARC data gets referenced. Relying on this specification, MARCspec parsers could be build, which serve as a basis and assure a common syntax for filter functionalities across different tools.
+
 ## Introduction
 
 People who are familiar with the MARC21 format [1] and especially with the MARC21 format for bibliographic data [2] know what it means when they read
