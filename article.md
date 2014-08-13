@@ -295,32 +295,61 @@ Like XPath MARCspec is designed to work as a parameter for some document filter 
 
 The purpose of a MARCspec parser [[^12]] is it to parse a MARCspec expression into an object, which is interpretable for MARCspec interpreters. Most suitable format for this object is JSON [[^13]], because of its language independence. If also this object conforms to the MARCspec object schema [[^14]], MARCspec interpreters can rely on this schema and be developed independently from MARCspec parsers.
 
+## Discussion
+
+Since I come from a German library and MARC is relatively new to German libraries,[[^16]] my experience with MARC was very little. When I announced the development of MARCspec the first time on the Perl4Lib mailing list [[^17]], I was pointed to some problems according to ISBD punctuation. This practice of cataloging within a MARC record first surprised me because it has archaic roots from the beginning of the MARC development in the 70s.
+
+I discovered from later researches that ISBD punctuation in MARC is used for two purposes [[^18]]:
+
+1. display of the traditional paragraph style
+2. designation of data elements beyond MARC subfield designators
+
+The first purpose is rather annoying, because the traditional paragraph style is rarely seen anywhere and tool have to strip off the ISBD punctuation for other display styles or transformations.
+
+The second purpose is from a software point of view useless. Like the majority of MARC tools that are familiar to me [[^19]], MARCspecs view on MARC is MARC as a key-value format. Thus in general there will be some accessibility like in this pseudo-code
+
+```
+sf_content = field.getContent('a');
+```
+
+The ISBD punctuation is never been taken into account. You can say that librarians encode information through ISBD punctuation, but there is no software that decodes this information.
+
+Thus MARCspec will not solve all the problems developers have with MARC data, but it can be a huge step towards the accessibility of MARC data, whether MARC will replaced by another format. 
+
 ## References
 
-[^1]: MARC webite see http://www.loc.gov/marc/
+[^1]: MARC website see [http://www.loc.gov/marc/]
 
-[^2]: MARC bibliographic see http://www.loc.gov/marc/bibliographic/
+[^2]: MARC bibliographic see [http://www.loc.gov/marc/bibliographic/]
 
-[^3]: MARC field specification usage see http://www.loc.gov/standards/mods/mods-mapping.html#mapping
+[^3]: MARC field specification usage see [http://www.loc.gov/standards/mods/mods-mapping.html#mapping]
 
-[^4]: solrmarc project on Google code see https://code.google.com/p/solrmarc/
+[^4]: solrmarc project on Google code see [https://code.google.com/p/solrmarc/]
 
-[^5]: Catmandu project website http://librecat.org/ and https://metacpan.org/pod/Catmandu::Fix::marc_map
+[^5]: Catmandu project website [http://librecat.org/] and [https://metacpan.org/pod/Catmandu::Fix::marc_map]
 
-[^6]: MARCspec specification see http://cklee.github.io/marc-spec/
+[^6]: MARCspec specification see [http://cklee.github.io/marc-spec/]
 
-[^7]: MARCspec Feedback at https://github.com/cklee/marc-spec/issues
+[^7]: MARCspec Feedback at [https://github.com/cklee/marc-spec/issues]
 
-[^8]: MARC 21 principles see http://www.loc.gov/marc/96principl.html
+[^8]: MARC 21 principles see [http://www.loc.gov/marc/96principl.html]
 
-[^9]: MARC 21 record structure see http://www.loc.gov/marc/specifications/specrecstruc.html
+[^9]: MARC 21 record structure see [http://www.loc.gov/marc/specifications/specrecstruc.html]
 
-[^10]: ISO 2709 see http://en.wikipedia.org/wiki/ISO_2709
+[^10]: ISO 2709 see [http://en.wikipedia.org/wiki/ISO_2709]
 
-[^11]: MARC 21 Coded Data see http://www.loc.gov/marc/96principl.html#nine
+[^11]: MARC 21 Coded Data see [http://www.loc.gov/marc/96principl.html#nine]
 
-[^12]: See https://github.com/cKlee/php-marc-spec for an example of a MARCspec parser (written in PHP)
+[^12]: See [https://github.com/cKlee/php-marc-spec] for an example of a MARCspec parser (written in PHP)
 
-[^13]: JSON specification see http://json.org/
+[^13]: JSON specification see [http://json.org/]
 
-[^14]: See https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json
+[^14]: See [https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json]
+
+[^15]: Just to mention some: marc4j see [https://github.com/marc4j/marc4j], MARC::Record see [http://search.cpan.org/~gmcharlt/MARC-Record-2.0.6/lib/MARC/Record.pm], ruby-marc see [https://github.com/ruby-marc/ruby-marc]
+
+[^16]: The German National Library delivers their data in MARC since 2009 (see [http://www.dnb.de/marc21]).
+
+[^17]: Perl4Lib mailing list see [http://perl4lib.perl.org/]
+
+[^18]: see ISBD and MARC Task Group report [http://www.loc.gov/aba/pcc/sca/documents/isbdmarc.docx] and discussion paper "ISBD punctuation in the MARC 21 Bibliographic Format" [http://www.loc.gov/marc/marbi/2010/2010-dp01.html]
