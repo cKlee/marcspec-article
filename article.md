@@ -6,7 +6,7 @@ MARCspec is a specification for referencing data in MARC records. MARCspecs are 
 
 ## Introduction
 
-People who are familiar with the MARC21 format [1] and especially with the MARC21 format for bibliographic data [2] know what it means when they read
+People who are familiar with the MARC21 format [[^1]] and especially with the MARC21 format for bibliographic data [[^2]] know what it means when they read
 
 ```
 245 $a
@@ -14,17 +14,17 @@ People who are familiar with the MARC21 format [1] and especially with the MARC2
 
 For those who don't: It is a simple way to express that we talk about the content of the subfield 'a' of the field '245' in a MARC record. You can do this with every combination of field and subfield possible by the MARC specification. In general this is referred to as __MARC field specification__ or shorter a __MARC spec__.
 
-Such field specifications are commonly used for documentation or illustrative issues like mappings (see [3]). But also existing tools like solrmarc [4] or catmandu [5] are using their own flavour of MARC field specifications as a tool specific configuration language. You cannot expect the same MARC field specification is working across different tools.
+Such field specifications are commonly used for documentation or illustrative issues like mappings (see [[^3]]). But also existing tools like solrmarc [[^4]] or catmandu [[^5]] are using their own flavour of MARC field specifications as a tool specific configuration language. You cannot expect the same MARC field specification is working across different tools.
 
-The purpose of the hereby described specification __MARCspec__ [6] is it to unify the way a MARC field specification is expressed. MARCspec parsers could then be build on top of this specification working as a basis of different tools and assuring a common syntax for MARC field specifications across different tools.
+The purpose of the hereby described specification __MARCspec__ [[^6]] is it to unify the way a MARC field specification is expressed. MARCspec parsers could then be build on top of this specification working as a basis of different tools and assuring a common syntax for MARC field specifications across different tools.
 
-The current version of MARCspec is a preliminary draft for open discussion. Feedback [7] is welcome!
+The current version of MARCspec is a preliminary draft for open discussion. Feedback [[^7]] is welcome!
 
 ## What is a MARCspec?
 
 To understand what a MARCspec represents one must have a basic knowledge on the MARC principles. For further references I'm giving a brief introduction. Please skip the next paragraph if you are familiar with MARC.
 
-Machine-Readable Cataloguing (MARC) is a document-based key-value exchange format for bibliographic and other library related data. A MARC record consists of three main sections: the leader, the directory, and the variable fields with the data content. There are two kinds of (variable) fields: (variable) control fields and (variable) data fields. The term 'fixed field' stands for fields whose length does not vary, like the leader and some of the control fields. The field content in the the fixed fields can be accessed through its character position or character range. Only data fields are divided into subfields. Subfields can also be contextualized through indicators. There is an indicator 1 and an indicator 2 for all data fields, both are optional. For a deeper explanation of MARC see [8] and [9].
+Machine-Readable Cataloguing (MARC) is a document-based key-value exchange format for bibliographic and other library related data. A MARC record consists of three main sections: the leader, the directory, and the variable fields with the data content. There are two kinds of (variable) fields: (variable) control fields and (variable) data fields. The term 'fixed field' stands for fields whose length does not vary, like the leader and some of the control fields. The field content in the the fixed fields can be accessed through its character position or character range. Only data fields are divided into subfields. Subfields can also be contextualized through indicators. There is an indicator 1 and an indicator 2 for all data fields, both are optional. For a deeper explanation of MARC see [[^8]] and [[^9]].
 
 This image illustrates the structure of a data field
 
@@ -67,7 +67,7 @@ The character '.' in this MARCspec must be interpreted as a wildcard for any all
 
 is then a reference to the data elements in all fields beginning with '3'.
 
-While MARC 21 does only allow digits with the range 001–999 for field tags, for conformity to ISO 2709 [10] MARCspec allows alphabetic characters too. More precisely the field tag may consist of ASCII numeric characters (decimal integers 0-9) and/or ASCII alphabetic characters (uppercase or lowercase, but not both) or the character '.'. A special field tag is 'LDR' for the leader.
+While MARC 21 does only allow digits with the range 001–999 for field tags, for conformity to ISO 2709 [[^10]] MARCspec allows alphabetic characters too. More precisely the field tag may consist of ASCII numeric characters (decimal integers 0-9) and/or ASCII alphabetic characters (uppercase or lowercase, but not both) or the character '.'. A special field tag is 'LDR' for the leader.
 
 Together with spec for the field tag it is possible to reference specific repetitions of fields like with the MARCspec
 
@@ -193,11 +193,11 @@ One way, how the content gets contextualized in data fields, is through indicato
 245_10$a
 ```
 
-(see MARCspec specification [6] for a deeper explanation of the syntax of indicators).
+(see MARCspec specification [[^6]] for a deeper explanation of the syntax of indicators).
 
-Another way, how content gets contextualized, is through coded data. Although coded data occur most frequently in the leader, directory, and variable control fields, any field or subfield may be defined for coded-data elements. [11]
+Another way, how content gets contextualized, is through coded data. Although coded data occur most frequently in the leader, directory, and variable control fields, any field or subfield may be defined for coded-data elements. [[^11]]
 
-To embrace this fact, MARCspec introduces sub-specs (subSpec), a method to check for contextualization. A subSpec is enclosed with the characters '{' and '}' and consists of one or more sets of sub-terms (subTerm) (the left and the right subTerm) plus an operator.
+To embrace this fact, MARCspec introduces subSpecs, a method to check for contextualization. A subSpec is enclosed with the characters '{' and '}' and consists of one or more sets of subTerms (the left and the right subTerm) plus an operator.
 
 Here is a simple example for a subSpec
 
@@ -218,7 +218,7 @@ The idea behind subSpecs is to validate the expression stated in the subSpec as 
 | !               | not exists       |
 | ?               | exists           |
 
-Every subTerm of a subSpec can be either a MARCspec or a comparison-string (comparisonString). ComparisonStrings are preceded by the character '\' and have some requirements towards escaping of special characters (see MARCspec specification [6] for a deeper explanation of comparisonStrings).
+Every subTerm of a subSpec can be either a MARCspec or a comparison-string (comparisonString). ComparisonStrings are preceded by the character '\' and have some requirements towards escaping of special characters (see MARCspec specification [[^6]] for a deeper explanation of comparisonStrings).
 
 Furthermore expressions in subSpecs can be chained through the character '|' ( as a symbol for the boolean OR) and multiple subSpecs can be repeated one after another (interpreted as the boolean AND).
 
@@ -254,39 +254,73 @@ or more clear with the substrings instead of MARCspecs
 
 In this case the MARCspec is used to reference data, because the expression 'a = a' is true.
 
+#### Convenient writing
 
+Now writing subSpecs can be very verbose if one have always to repeat the field tag, the index position, the indicators or the subfield code. MARCspec therefore allows a convenient way of writing by abbreviating specs within subSpecs. For instance instead of writing
+
+```
+245_04$c{245_04$a/#=\/}
+```
+
+one can abbreviate the spec within the subSpec like
+
+```
+245_04$c{$a/#=\/}
+```
+
+Another possibility of abbreviation is with the operators '!' (not exists) and '?' (exists). For instance if one checks for the non-existence of the first repetition of field '007', it is possible to omit the left subTerm like
+
+```
+LDR/6{!007[1]}
+```
+
+Since the operator '?' (exists) is the default operator, it can also be omitted. Thus instead of writing
+
+```
+LDR/6{?007[1]}
+```
+
+it is possible to write
+
+```
+LDR/6{007[1]}
+```
+
+
+## Implementation
+
+Like XPath MARCspec is designed to work as a parameter for some document filter functionality of some tool. A software stack of a MARCspec implementation could look like this
+
+![MARCspec software stack](images/software_stack.jpg)
+
+The purpose of a MARCspec parser [[^12]] is it to parse a MARCspec expression into an object, which is interpretable for MARCspec interpreters. Most suitable format for this object is JSON [[^13]], because of its language independence. If also this object conforms to the MARCspec object schema [[^14]], MARCspec interpreters can rely on this schema and be developed independently from MARCspec parsers.
 
 ## References
 
-[1]: #1 
-\[1] http://www.loc.gov/marc/
+[^1]: http://www.loc.gov/marc/
 
-[2]: #2 
-\[2] http://www.loc.gov/marc/bibliographic/
+[^2]: http://www.loc.gov/marc/bibliographic/
 
-[3]: #3 
-\[3] http://www.loc.gov/standards/mods/mods-mapping.html#mapping
+[^3]: http://www.loc.gov/standards/mods/mods-mapping.html#mapping
 
-[4]: #4 
-\[4] https://code.google.com/p/solrmarc/
+[^4]: https://code.google.com/p/solrmarc/
 
-[5]: #5 
-\[5] http://librecat.org/ and https://metacpan.org/pod/Catmandu::Fix::marc_map
+[^5]: http://librecat.org/ and https://metacpan.org/pod/Catmandu::Fix::marc_map
 
-[6]: #6 
-\[6] http://cklee.github.io/marc-spec/
+[^6]: http://cklee.github.io/marc-spec/
 
-[7]: #7 
-\[7] https://github.com/cklee/marc-spec/issues
+[^7]: https://github.com/cklee/marc-spec/issues
 
-[8]: #8 
-\[8] http://www.loc.gov/marc/96principl.html
+[^8]: http://www.loc.gov/marc/96principl.html
 
-[9]: #9 
-\[9] http://www.loc.gov/marc/specifications/specrecstruc.html
+[^9]: http://www.loc.gov/marc/specifications/specrecstruc.html
 
-[10]: #10 
-\[10] http://en.wikipedia.org/wiki/ISO_2709
+[^10]: http://en.wikipedia.org/wiki/ISO_2709
 
-[11]: #11 
-\[11] http://www.loc.gov/marc/96principl.html#nine
+[^11]: http://www.loc.gov/marc/96principl.html#nine
+
+[^12]: See https://github.com/cKlee/php-marc-spec for an example of a MARCspec parser (written in PHP)
+
+[^13]: http://json.org/
+
+[^14]: See https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json
