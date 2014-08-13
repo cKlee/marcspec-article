@@ -297,30 +297,30 @@ The purpose of a MARCspec parser [[^12]] is it to parse a MARCspec expression in
 
 ## References
 
-[^1]: http://www.loc.gov/marc/
+[^1]: MARC webite see http://www.loc.gov/marc/
 
-[^2]: http://www.loc.gov/marc/bibliographic/
+[^2]: MARC bibliographic see http://www.loc.gov/marc/bibliographic/
 
-[^3]: http://www.loc.gov/standards/mods/mods-mapping.html#mapping
+[^3]: MARC field specification usage see http://www.loc.gov/standards/mods/mods-mapping.html#mapping
 
-[^4]: https://code.google.com/p/solrmarc/
+[^4]: solrmarc project on Google code see https://code.google.com/p/solrmarc/
 
-[^5]: http://librecat.org/ and https://metacpan.org/pod/Catmandu::Fix::marc_map
+[^5]: Catmandu project website http://librecat.org/ and https://metacpan.org/pod/Catmandu::Fix::marc_map
 
-[^6]: http://cklee.github.io/marc-spec/
+[^6]: MARCspec specification see http://cklee.github.io/marc-spec/
 
-[^7]: https://github.com/cklee/marc-spec/issues
+[^7]: MARCspec Feedback at https://github.com/cklee/marc-spec/issues
 
-[^8]: http://www.loc.gov/marc/96principl.html
+[^8]: MARC 21 principles see http://www.loc.gov/marc/96principl.html
 
-[^9]: http://www.loc.gov/marc/specifications/specrecstruc.html
+[^9]: MARC 21 record structure see http://www.loc.gov/marc/specifications/specrecstruc.html
 
-[^10]: http://en.wikipedia.org/wiki/ISO_2709
+[^10]: ISO 2709 see http://en.wikipedia.org/wiki/ISO_2709
 
-[^11]: http://www.loc.gov/marc/96principl.html#nine
+[^11]: MARC 21 Coded Data see http://www.loc.gov/marc/96principl.html#nine
 
 [^12]: See https://github.com/cKlee/php-marc-spec for an example of a MARCspec parser (written in PHP)
 
-[^13]: http://json.org/
+[^13]: JSON specification see http://json.org/
 
 [^14]: See https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json
