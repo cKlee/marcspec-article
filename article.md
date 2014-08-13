@@ -346,7 +346,7 @@ Thus MARCspec will not solve all the problems developers have with MARC data, bu
 
 [^14]: See [https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json]
 
-[^15]: Just to mention some: marc4j see [https://github.com/marc4j/marc4j], MARC::Record see [http://search.cpan.org/~gmcharlt/MARC-Record-2.0.6/lib/MARC/Record.pm], ruby-marc see [https://github.com/ruby-marc/ruby-marc]
+[^15]: Just to mention some: File_MARC see [http://pear.php.net/package/File_MARC/], marc4j see [https://github.com/marc4j/marc4j], MARC::Record see [http://search.cpan.org/~gmcharlt/MARC-Record-2.0.6/lib/MARC/Record.pm], ruby-marc see [https://github.com/ruby-marc/ruby-marc]
 
 [^16]: The German National Library delivers their data in MARC since 2009 (see [http://www.dnb.de/marc21]).
 
