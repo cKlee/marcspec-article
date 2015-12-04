@@ -6,9 +6,9 @@ MARCspec is a specification for referencing data in MARC records. MARCspec expre
 
 ## Introduction
 
-People who are familiar with the MARC21 format [[^1]] and especially with the MARC21 format for bibliographic data [[^2]] know what it means when they read
+People who are familiar with the MARC21 format [^1] and especially with the MARC21 format for bibliographic data [[^2]] know what it means when they read
 
-```   245 $a```
+    245 $a
 
 For those who don't: It is a simple way to express that we talk about the content of the subfield 'a' of the field '245' in a MARC record. You can do this with every combination of field and subfield possible by the MARC specification. In general this is referred to as __MARC field specification__ or shorter a __MARC spec__.
 
@@ -53,13 +53,11 @@ References a MARCspec does not allow:
 
 On the broadest level you can reference the whole record data with the MARCspec
 
-```
-...
-```
+    ...
 
 The character '.' in this MARCspec must be interpreted as a wildcard for any allowed character in a field tag. E.g.
 
-```3..```
+    3..
 
 is then a reference to the data elements in all fields beginning with '3'.
 
