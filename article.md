@@ -8,9 +8,7 @@ MARCspec is a specification for referencing data in MARC records. MARCspec expre
 
 People who are familiar with the MARC21 format [[^1]] and especially with the MARC21 format for bibliographic data [[^2]] know what it means when they read
 
-```
-245 $a
-```
+   245 $a
 
 For those who don't: It is a simple way to express that we talk about the content of the subfield 'a' of the field '245' in a MARC record. You can do this with every combination of field and subfield possible by the MARC specification. In general this is referred to as __MARC field specification__ or shorter a __MARC spec__.
 
