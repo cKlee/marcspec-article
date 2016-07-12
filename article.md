@@ -1,4 +1,4 @@
-# MARCspec - a common MARC record path language
+# MARCspec - A common MARC record path language
 
 ## Abstract
 
