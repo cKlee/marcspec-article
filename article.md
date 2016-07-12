@@ -12,9 +12,9 @@ People who are familiar with the MARC21 format [^1] and especially with the MARC
 
 For those who don't: It is a simple way to express that we talk about the content of the subfield 'a' of the field '245' in a MARC record. You can do this with every combination of field and subfield possible by the MARC specification. In general this is referred to as __MARC field specification__ or shorter a __MARC spec__.
 
-Such field specifications are commonly used for documentation or illustrative issues like mappings (see [[^3]]). But also existing tools like solrmarc [[^4]] or Traject [[^5]] are using their own flavour of MARC field specifications as a tool specific configuration language. You cannot expect the same MARC field specification is working across different tools.
+Such field specifications are commonly used for documentation or illustrative issues like mappings (see [[^3]]). But also existing tools like solrmarc [[^4]] or Traject [[^5]] are using their own flavor of MARC field specifications as a tool specific configuration language. You cannot expect the same MARC field specification is working across different tools.
 
-The purpose of the hereby described specification __MARCspec__ [[^6]] is it to unify the way a MARC field specification is expressed. MARCspec parsers could then be build on top of this specification working as a basis of different tools and assuring a common syntax for MARC field specifications across different tools.
+The purpose of the hereby described specification __MARCspec__ [[^6]] is it to unify the way a MARC field specification is expressed. MARCspec parsers could then be built on top of this specification working as a basis of different tools and assuring a common syntax for MARC field specifications across different tools.
 
 The current version of MARCspec is a preliminary draft for open discussion. Feedback [[^7]] is welcome!
 
@@ -22,7 +22,7 @@ The current version of MARCspec is a preliminary draft for open discussion. Feed
 
 To understand what a MARCspec represents one must have a basic knowledge on the MARC principles. For further references I'm giving a brief introduction. Please skip the next paragraph if you are familiar with MARC.
 
-Machine-Readable Cataloguing (MARC) is a document-based key-value exchange format for bibliographic and other library related data. A MARC record consists of three main sections: the leader, the directory, and the variable fields with the data content. There are two kinds of (variable) fields: (variable) control fields and (variable) data fields. The term 'fixed field' stands for fields whose length does not vary, like the leader and some of the control fields. The field content in the the fixed fields can be accessed through its character position or character range. Only data fields are divided into subfields. Subfields can also be contextualized through indicators. There is an indicator 1 and an indicator 2 for all data fields, both are optional. For a deeper explanation of MARC see [[^8]] and [[^9]].
+Machine-Readable Cataloguing (MARC) is a document-based key-value exchange format for bibliographic and other library related data. A MARC record consists of three main sections: the leader, the directory, and the variable fields with the data content. There are two kinds of (variable) fields: (variable) control fields and (variable) data fields. The term 'fixed field' stands for fields whose length does not vary, like the leader and some of the control fields. The field content in the fixed fields can be accessed through its character position or character range. Only data fields are divided into subfields. Subfields can also be contextualized through indicators. There is an indicator 1 and an indicator 2 for all data fields, both are optional. For a deeper explanation of MARC see [[^8]] and [[^9]].
 
 This image illustrates the structure of a data field
 
@@ -67,13 +67,13 @@ Together with a spec for the field tag it is possible to reference specific posi
 
     300[0]
 
-The position of the repeatable field is expressed through its index enclosed with square brackets. The first position is always expressed through the index with the value '0'. Index ranges can also be expressed like in the following MARCpsec ( a reference to the first three occurrences of the field '300')
+The position of the repeatable field is expressed through its index enclosed with square brackets. The first position is always expressed through the index with the value '0'. Index ranges can also be expressed like in the following MARCspec (a reference to the first three occurrences of the field '300')
 
     300[0-2]
 
 ### Reference to data content
 
-Since field content of fixed fields can be referenced by its character position or character range, MARCspec allows to specify such references through a character spec. The character spec is prefixed by the character '/'. The following MARCspec references the the first character of the field content of the first occurrence of field '007'
+Since field content of fixed fields can be referenced by its character position or character range, MARCspec allows specifying such references through a character spec. The character spec is prefixed by the character '/'. The following MARCspec references the first character of the field content of the first occurrence of field '007'
 
 ```
 007[0]/0
@@ -115,9 +115,9 @@ is a reference to the first four characters of the content of subfield 'c' of th
 
 ### Index and character position syntax
 
-As you might have noticed from the examples above, the index position of fields and subfields and the character spec of fixed fields and subfields share the same principles. The first index position and the first content character are always expressed through the value '0'. Both positions and substrings can be referenced by ranges of indizes or character positions.
+As you might have noticed from the examples above, the index position of fields and subfields and the character spec of fixed fields and subfields share the same principles. The first index position and the first content character are always expressed through the value '0'. Both positions and substrings can be referenced by ranges of indices or character positions.
 
-At some point it might be necessary to reference the last repetition or the last character of some content without having knowledge how often a field is repeated or how many characters a subfield holds. Therefore MARCspec uses the character '#' as a symbol for the the last position. Thus the MARCspec
+At some point it might be necessary to reference the last repetition or the last character of some content without having knowledge how often a field is repeated or how many characters a subfield holds. Therefore MARCspec uses the character '#' as a symbol for the last position. Thus the MARCspec
 
 ```
 245$a/#
@@ -137,11 +137,11 @@ The character '#' can also be used in ranges. For instance the MARCspec
 020[1-#]
 ```
 
-is a reference to all but the first occurrence of field '020'. To reference all occurrences of one field it is not necessary to specify an index range. Field specs without indizes are always a reference to all occurrences of the field, like subfield specs without a character spec are always references to all the content of a subfield.
+is a reference to all but the first occurrence of field '020'. To reference all occurrences of one field it is not necessary to specify an index range. Field specs without indices are always a reference to all occurrences of the field, like subfield specs without a character spec are always references to all the content of a subfield.
 
-By using the character '#' as the starting index for an index or character range, the reverse order of indizes is assumned. 
+By using the character '#' as the starting index for an index or character range, the reverse order of indices is assumed. 
 
-A simple example should illustrate this different behaviour. Imagine a subfield 'q' with content 'pbk.'. As a default order the characters of this content have the following indizes:
+A simple example should illustrate this different behavior. Imagine a subfield 'q' with content 'pbk.'. As a default order the characters of this content have the following indices:
 
 ```
 p => 0
@@ -162,7 +162,7 @@ references the substring 'bk.', since 'b' has the index value '1' and '.' is the
 ...$q/#-1
 ```
 
-the MARCspec references the substring 'k.'. This might be a little bit unexpected. But this behaviour gets more clear if we look at the reverse index order
+the MARCspec references the substring 'k.'. This might be a little bit unexpected. But this behavior gets clearer if we look at the reverse index order
 
 ```
 p => 3
@@ -175,9 +175,9 @@ This interpretation makes it possible to specify a substring beginning at the en
 
 ### Reference to contextualized data
 
-Contents in MARC can be pretty hard to understand. One must look up different data elements at different locations to interpret the content depending on the values of these data elements. You can say, the content is contextualized.
+Contents in MARC can be pretty hard to understand. One must look up different data elements at different locations to interpret the content depending on the values of these data elements. You can say the content is contextualized.
 
-One way, how the content gets contextualized in data fields, is through indicators . Therefore MARCspec allows specifying the indicator 1 and 2 like in the following example
+One way, how the content gets contextualized in data fields, is through indicators. Therefore MARCspec allows specifying the indicator 1 and 2 like in the following example
 
 ```
 245_10$a
@@ -210,7 +210,7 @@ The idea behind subSpecs is to validate the expression stated in the subSpec as 
 
 Every subTerm of a subSpec can be either a MARCspec or a comparison-string (comparisonString). ComparisonStrings are prefixed by the character '\' and have some requirements towards escaping of special characters (see MARCspec specification [[^6]] for a deeper explanation of comparisonStrings).
 
-Furthermore expressions in subSpecs can be chained through the character '|' ( as a symbol for the boolean OR) and multiple subSpecs can be repeated one after another (interpreted as the boolean AND).
+Furthermore expressions in subSpecs can be chained through the character '|' (as a symbol for the Boolean OR) and multiple subSpecs can be repeated one after another (interpreted as the Boolean AND).
 
 Here are two examples for alternative expressions and repeated subSpecs
 
@@ -230,7 +230,7 @@ SubSpecs need some further explanation. In the simple subSpec example above two 
 
 This MARCspec can be read like: "Reference content of subfield 'a' of field '020', if substring with index position '0' of field '007' equals the string 'a'".
 
-Now, field '007' is a repeatable field. So potentially there are more then one pair of strings to be compared. Let's say the field '007' is repeated once and the two substrings having the index position '0' are 'a' and 'b'. The interpretation of subSpecs then works like if we write 
+Now, field '007' is a repeatable field. So potentially there is more than one pair of strings to be compared. Let's say the field '007' is repeated once and the two substrings having the index position '0' are 'a' and 'b'. The interpretation of subSpecs then works like if we write 
 
 ```
 020$a{007[0]/0=\a|007[1]/0=\a}
@@ -246,7 +246,7 @@ In this case the MARCspec is used to reference data, because the expression 'a =
 
 #### Convenient writing
 
-Now writing subSpecs can be very verbose if one have always to repeat the field tag, the index position, the indicators or the subfield code. MARCspec therefore allows a convenient way of writing by abbreviating specs within subSpecs. For instance instead of writing
+Now writing subSpecs can be very verbose if one has always to repeat the field tag, the index position, the indicators or the subfield code. MARCspec therefore allows a convenient way of writing by abbreviating specs within subSpecs. For instance instead of writing
 
 ```
 245_04$c{245_04$a/#=\/}
@@ -283,20 +283,20 @@ Like XPath MARCspec is designed to work as a parameter for document filter funct
 
 ![MARCspec software stack](images/software_stack.jpg)
 
-The purpose of a MARCspec parser  is it to parse a MARCspec expression into an object, which is interpretable for MARCspec interpreters. Most suitable format for this object is JSON [[^12]], because of its language independence. If also this object conforms to the MARCspec object schema [[^13]], MARCspec interpreters can rely on this schema and be developed independently from MARCspec parsers.
+The purpose of a MARCspec parser is it to parse a MARCspec expression into an object, which is interpretable for MARCspec interpreters. Most suitable format for this object is JSON [[^12]], because of its language independence. If also this object conforms to the MARCspec object schema [[^13]], MARCspec interpreters can rely on this schema and be developed independently from MARCspec parsers.
 
 There are already existing MARCspec parsers for Perl [[^14]] and PHP [[^15]] and also MARCspec interpreters for MARC tools like Catmandu [[^16]] and File_MARC [[^17]]. 
 
 ## Discussion
 
-Since I come from a German library and MARC is relatively new in the German libraries [[^18]], my experience with MARC was rather low . When I announced the development of MARCspec the first time on the Perl4Lib mailing list [[^19]], I was pointed to some problems according to ISBD punctuation. This practice of cataloging within a MARC record first surprised me because it has archaic roots from the beginning of the MARC development in the 70s.
+Since I come from a German library and MARC is relatively new in the German libraries [[^18]], my experience with MARC was rather low. When I announced the development of MARCspec the first time on the Perl4Lib mailing list [[^19]], I was pointed to some problems according to ISBD punctuation. This practice of cataloging within a MARC record first surprised me because it has archaic roots from the beginning of the MARC development in the 70s.
 
 I discovered from later researches that ISBD punctuation in MARC is used for two purposes [[^20]]:
 
 1. display of the traditional paragraph style
 2. designation of data elements beyond MARC subfield designators
 
-The first purpose is rather annoying, because the traditional paragraph style is rarely seen anywhere and tools have to strip off the ISBD punctuation for other display styles or transformations.
+The first purpose is rather annoying. The traditional paragraph style is rarely seen anywhere and tools have to strip off the ISBD punctuation for other display styles or transformations.
 
 The second purpose is from a software point of view useless. Like the majority of MARC tools that are familiar to me [[^21]], MARCspecs view on MARC is MARC as a key-value format. Thus in general there will be some accessibility like in this pseudo-code
 
@@ -306,9 +306,9 @@ sf_content = field.getContent('a');
 
 The ISBD punctuation is never been taken into account. You can say that librarians encode information through ISBD punctuation, but there is no software that decodes this information.
 
-Thus MARCspec will not solve all the problems [[^22]] developers have with MARC data, but it can be a huge step towards the accessibility of MARC data, whether MARC will replaced by another format. 
+Thus MARCspec will not solve all the problems [[^22]] developers have with MARC data, but it can be a huge step towards the accessibility of MARC data, whether MARC will be replaced by another format. 
 
-## References
+## Notes
 
 [^1]: The official MARC website [http://www.loc.gov/marc/]
 
