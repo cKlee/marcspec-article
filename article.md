@@ -342,7 +342,7 @@ Thus MARCspec will not solve all the problems [[^22]] developers have with MARC 
 
 [^16]: Catmandu::Fix::marc_spec [https://metacpan.org/release/Catmandu-Fix-marc_spec] is a MARCspec interpreter for Catmandu - the data processing toolkit [http://librecat.org/]
 
-[^17]: File_MARC [http://pear.php.net/package/File_MARC/] is a MARC processing tool for PHP.
+[^17]: File_MARC [http://pear.php.net/package/File_MARC/] is a MARC processing tool for PHP. See also scriptotek/marc [https://github.com/scriptotek/php-marc] for an implementation of MARCspec.
 
 [^18]: The German National Library delivers their data in MARC since 2009 (see [http://www.dnb.de/marc21]).
 
