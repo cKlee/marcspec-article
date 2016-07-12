@@ -12,7 +12,7 @@ People who are familiar with the MARC21 format [^1] and especially with the MARC
 
 For those who don't: It is a simple way to express that we talk about the content of the subfield 'a' of the field '245' in a MARC record. You can do this with every combination of field and subfield possible by the MARC specification. In general this is referred to as __MARC field specification__ or shorter a __MARC spec__.
 
-Such field specifications are commonly used for documentation or illustrative issues like mappings (see [[^3]]). But also existing tools like solrmarc [[^4]] or catmandu [[^5]] are using their own flavour of MARC field specifications as a tool specific configuration language. You cannot expect the same MARC field specification is working across different tools.
+Such field specifications are commonly used for documentation or illustrative issues like mappings (see [[^3]]). But also existing tools like solrmarc [[^4]] or Traject [[^5]] are using their own flavour of MARC field specifications as a tool specific configuration language. You cannot expect the same MARC field specification is working across different tools.
 
 The purpose of the hereby described specification __MARCspec__ [[^6]] is it to unify the way a MARC field specification is expressed. MARCspec parsers could then be build on top of this specification working as a basis of different tools and assuring a common syntax for MARC field specifications across different tools.
 
@@ -53,31 +53,27 @@ References a MARCspec does not allow:
 
 On the broadest level you can reference the whole record data with the MARCspec
 
-...
+    ...
 
 The character '.' in this MARCspec must be interpreted as a wildcard for any allowed character in a field tag. E.g.
 
-3..
+    3..
 
 is then a reference to the data elements in all fields beginning with '3'.
 
 While MARC 21 does only allow digits with the range 001–999 for field tags, for conformity to ISO 2709 [[^10]] MARCspec allows alphabetic characters too. More precisely the field tag may consist of ASCII numeric characters (decimal integers 0-9) and/or ASCII alphabetic characters (uppercase or lowercase, but not both) or the character '.'. A special field tag is 'LDR' for the leader.
 
-Together with spec for the field tag it is possible to reference specific repetitions of fields like with the MARCspec
+Together with a spec for the field tag it is possible to reference specific positions of repeatable fields with a MARCspec like
 
-```
-300[0]
-```
+    300[0]
 
-The position of the repeatable field is expressed through its index enclosed with square brackets. The first position is always expressed through the index with the value '0'. Index ranges can also be expressed like in the following MARCpsec ( a reference to the first three repetitions of the field '300')
+The position of the repeatable field is expressed through its index enclosed with square brackets. The first position is always expressed through the index with the value '0'. Index ranges can also be expressed like in the following MARCpsec ( a reference to the first three occurrences of the field '300')
 
-```
-300[0-2]
-```
+    300[0-2]
 
 ### Reference to data content
 
-Since field content of fixed fields can be referenced by its character position or character range, MARCspec allows to specify such references through a character spec. The character spec is prefixed by the character '/'. The following MARCspec references the the first character of the field content of the first repetition of field '007'
+Since field content of fixed fields can be referenced by its character position or character range, MARCspec allows to specify such references through a character spec. The character spec is prefixed by the character '/'. The following MARCspec references the the first character of the field content of the first occurrence of field '007'
 
 ```
 007[0]/0
@@ -101,13 +97,13 @@ or a little bit less verbose by using a subfield tag range
 245$a-c
 ``` 
 
-Since subfields are also repeatable, MARCspec uses the same syntax for references to repetitions of subfields like for references to repetitions of repeatable fields. Thus the MARCspec
+Since subfields are also repeatable, MARCspec uses the same syntax for references to positions of repeatable subfields like for references to positions of repeatable fields. Thus the MARCspec
 
 ```
 020$z[2]
 ```
 
-is a reference to the content of the third repetition of subfield 'z' of field '020'.
+is a reference to the content of the third subfield 'z' of field '020'.
 
 Like the character spec for fixed fields, references to substrings of data content are also possible. E.g. the MARCspec
 
@@ -115,7 +111,7 @@ Like the character spec for fixed fields, references to substrings of data conte
 020[0]$c/0-3
 ```
 
-is a reference to the first four characters of the content of subfield 'c' of the first repetition of field '020'.
+is a reference to the first four characters of the content of subfield 'c' of the first field '020'.
 
 ### Index and character position syntax
 
@@ -133,7 +129,7 @@ is a reference to the last character of subfield 'a' of field '245'. And the MAR
 020[#]
 ```
 
-is a reference to the last repetition of field '020'.
+is a reference to the last position of the repeatable field '020'.
 
 The character '#' can also be used in ranges. For instance the MARCspec
 
@@ -141,7 +137,7 @@ The character '#' can also be used in ranges. For instance the MARCspec
 020[1-#]
 ```
 
-is a reference to all but the first repetition of field '020'. To reference all repetitions of one field it is not necessary to specify an index range. Field specs without indizes are always a reference to all repetitions of the field, like subfield specs without a character spec are always references to all content of the subfield.
+is a reference to all but the first occurrence of field '020'. To reference all occurrences of one field it is not necessary to specify an index range. Field specs without indizes are always a reference to all occurrences of the field, like subfield specs without a character spec are always references to all the content of a subfield.
 
 By using the character '#' as the starting index for an index or character range, the reverse order of indizes is assumned. 
 
@@ -189,7 +185,7 @@ One way, how the content gets contextualized in data fields, is through indicato
 
 (see MARCspec specification [[^6]] for a deeper explanation of the syntax of indicators).
 
-Another way, how content gets contextualized, is through coded data. Although coded data occur most frequently in the leader, directory, and variable control fields, any field or subfield may be defined for coded-data elements. [[^11]]
+Another way, how content gets contextualized, is through coded data. Although coded data occurs most frequently in the leader, directory, and variable control fields, any field or subfield may be defined for coded-data elements. [[^11]]
 
 To embrace this fact, MARCspec introduces subSpecs, a method to check for contextualization. A subSpec is enclosed with the characters '{' and '}' and consists of one or more sets of subTerms (the left and the right subTerm) plus an operator.
 
@@ -212,7 +208,7 @@ The idea behind subSpecs is to validate the expression stated in the subSpec as 
 | !               | not exists       |
 | ?               | exists           |
 
-Every subTerm of a subSpec can be either a MARCspec or a comparison-string (comparisonString). ComparisonStrings are preceded by the character '\' and have some requirements towards escaping of special characters (see MARCspec specification [[^6]] for a deeper explanation of comparisonStrings).
+Every subTerm of a subSpec can be either a MARCspec or a comparison-string (comparisonString). ComparisonStrings are prefixed by the character '\' and have some requirements towards escaping of special characters (see MARCspec specification [[^6]] for a deeper explanation of comparisonStrings).
 
 Furthermore expressions in subSpecs can be chained through the character '|' ( as a symbol for the boolean OR) and multiple subSpecs can be repeated one after another (interpreted as the boolean AND).
 
@@ -240,7 +236,7 @@ Now, field '007' is a repeatable field. So potentially there are more then one p
 020$a{007[0]/0=\a|007[1]/0=\a}
 ```
 
-or more clear with the substrings instead of MARCspecs
+or more clearly with the substrings instead of MARCspecs
 
 ```
 020$a{\a=\a|\b=\a}
@@ -283,24 +279,26 @@ LDR/6{007[1]}
 
 ## Implementation
 
-Like XPath MARCspec is designed to work as a parameter for some document filter functionality of some tool. A software stack of a MARCspec implementation could look like this
+Like XPath MARCspec is designed to work as a parameter for document filter functionalities of all kinds of MARC tools. A software stack of a MARCspec implementation could look like this
 
 ![MARCspec software stack](images/software_stack.jpg)
 
-The purpose of a MARCspec parser [[^12]] is it to parse a MARCspec expression into an object, which is interpretable for MARCspec interpreters. Most suitable format for this object is JSON [[^13]], because of its language independence. If also this object conforms to the MARCspec object schema [[^14]], MARCspec interpreters can rely on this schema and be developed independently from MARCspec parsers.
+The purpose of a MARCspec parser  is it to parse a MARCspec expression into an object, which is interpretable for MARCspec interpreters. Most suitable format for this object is JSON [[^12]], because of its language independence. If also this object conforms to the MARCspec object schema [[^13]], MARCspec interpreters can rely on this schema and be developed independently from MARCspec parsers.
+
+There are already existing MARCspec parsers for Perl [[^14]] and PHP [[^15]] and also MARCspec interpreters for MARC tools like Catmandu [[^16]] and File_MARC [[^17]]. 
 
 ## Discussion
 
-Since I come from a German library and MARC is relatively new to German libraries,[[^16]] my experience with MARC was very little. When I announced the development of MARCspec the first time on the Perl4Lib mailing list [[^17]], I was pointed to some problems according to ISBD punctuation. This practice of cataloging within a MARC record first surprised me because it has archaic roots from the beginning of the MARC development in the 70s.
+Since I come from a German library and MARC is relatively new in the German libraries [[^18]], my experience with MARC was rather low . When I announced the development of MARCspec the first time on the Perl4Lib mailing list [[^19]], I was pointed to some problems according to ISBD punctuation. This practice of cataloging within a MARC record first surprised me because it has archaic roots from the beginning of the MARC development in the 70s.
 
-I discovered from later researches that ISBD punctuation in MARC is used for two purposes [[^18]]:
+I discovered from later researches that ISBD punctuation in MARC is used for two purposes [[^20]]:
 
 1. display of the traditional paragraph style
 2. designation of data elements beyond MARC subfield designators
 
-The first purpose is rather annoying, because the traditional paragraph style is rarely seen anywhere and tool have to strip off the ISBD punctuation for other display styles or transformations.
+The first purpose is rather annoying, because the traditional paragraph style is rarely seen anywhere and tools have to strip off the ISBD punctuation for other display styles or transformations.
 
-The second purpose is from a software point of view useless. Like the majority of MARC tools that are familiar to me [[^19]], MARCspecs view on MARC is MARC as a key-value format. Thus in general there will be some accessibility like in this pseudo-code
+The second purpose is from a software point of view useless. Like the majority of MARC tools that are familiar to me [[^21]], MARCspecs view on MARC is MARC as a key-value format. Thus in general there will be some accessibility like in this pseudo-code
 
 ```
 sf_content = field.getContent('a');
@@ -308,42 +306,50 @@ sf_content = field.getContent('a');
 
 The ISBD punctuation is never been taken into account. You can say that librarians encode information through ISBD punctuation, but there is no software that decodes this information.
 
-Thus MARCspec will not solve all the problems developers have with MARC data, but it can be a huge step towards the accessibility of MARC data, whether MARC will replaced by another format. 
+Thus MARCspec will not solve all the problems [[^22]] developers have with MARC data, but it can be a huge step towards the accessibility of MARC data, whether MARC will replaced by another format. 
 
 ## References
 
-[^1]: MARC website see [http://www.loc.gov/marc/]
+[^1]: The official MARC website [http://www.loc.gov/marc/]
 
-[^2]: MARC bibliographic see [http://www.loc.gov/marc/bibliographic/]
+[^2]: The MARC 21 format for bibliographic data [http://www.loc.gov/marc/bibliographic/]
 
-[^3]: MARC field specification usage see [http://www.loc.gov/standards/mods/mods-mapping.html#mapping]
+[^3]: MARC field specification usage in documentation for transformations from MARC to MODS [http://www.loc.gov/standards/mods/mods-mapping.html#mapping]
 
 [^4]: solrmarc project on Google code see [https://code.google.com/p/solrmarc/]
 
-[^5]: Catmandu project website [http://librecat.org/] and [https://metacpan.org/pod/Catmandu::Fix::marc_map]
+[^5]: Traject MarcExtractor specification [http://www.rubydoc.info/gems/traject/Traject/MarcExtractor]
 
-[^6]: MARCspec specification see [http://cklee.github.io/marc-spec/]
+[^6]: The MARCspec specification [http://cklee.github.io/marc-spec/]
 
 [^7]: MARCspec Feedback at [https://github.com/cklee/marc-spec/issues]
 
-[^8]: MARC 21 principles see [http://www.loc.gov/marc/96principl.html]
+[^8]: The MARC 21 principles [http://www.loc.gov/marc/96principl.html]
 
-[^9]: MARC 21 record structure see [http://www.loc.gov/marc/specifications/specrecstruc.html]
+[^9]: The MARC 21 record structure [http://www.loc.gov/marc/specifications/specrecstruc.html]
 
-[^10]: ISO 2709 see [http://en.wikipedia.org/wiki/ISO_2709]
+[^10]: ISO 2709 standard for bibliographic descriptions [http://en.wikipedia.org/wiki/ISO_2709]
 
-[^11]: MARC 21 Coded Data see [http://www.loc.gov/marc/96principl.html#nine]
+[^11]: MARC 21 Coded Data [http://www.loc.gov/marc/96principl.html#nine]
 
-[^12]: See [https://github.com/cKlee/php-marc-spec] for an example of a MARCspec parser (written in PHP)
+[^12]: The JSON specification [http://json.org/]
 
-[^13]: JSON specification see [http://json.org/]
+[^13]: The MARCspec object schema as a JSON schema. See [https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json]
 
-[^14]: See [https://raw.githubusercontent.com/cKlee/marcspec-object-schema/master/schema.json]
+[^14]: MARC::Spec is a MARCspec parser for Perl [https://metacpan.org/pod/MARC::Spec]
 
-[^15]: Just to mention some: File_MARC see [http://pear.php.net/package/File_MARC/], marc4j see [https://github.com/marc4j/marc4j], MARC::Record see [http://search.cpan.org/~gmcharlt/MARC-Record-2.0.6/lib/MARC/Record.pm], ruby-marc see [https://github.com/ruby-marc/ruby-marc]
+[^15]: PHP-MARCspec is a MARCspec parser for PHP [https://github.com/MARCspec/php-marc-spec]
 
-[^16]: The German National Library delivers their data in MARC since 2009 (see [http://www.dnb.de/marc21]).
+[^16]: Catmandu::Fix::marc_spec [https://metacpan.org/release/Catmandu-Fix-marc_spec] is a MARCspec interpreter for Catmandu - the data processing toolkit [http://librecat.org/]
 
-[^17]: Perl4Lib mailing list see [http://perl4lib.perl.org/]
+[^17]: File_MARC [http://pear.php.net/package/File_MARC/] is a MARC processing tool for PHP.
 
-[^18]: see ISBD and MARC Task Group report [http://www.loc.gov/aba/pcc/sca/documents/isbdmarc.docx] and discussion paper "ISBD punctuation in the MARC 21 Bibliographic Format" [http://www.loc.gov/marc/marbi/2010/2010-dp01.html]
+[^18]: The German National Library delivers their data in MARC since 2009 (see [http://www.dnb.de/marc21]).
+
+[^19]: Perl4Lib mailing list see [http://perl4lib.perl.org/]
+
+[^20]: See ISBD and MARC Task Group report [http://www.loc.gov/aba/pcc/sca/documents/isbdmarc.docx] and discussion paper "ISBD punctuation in the MARC 21 Bibliographic Format" [http://www.loc.gov/marc/marbi/2010/2010-dp01.html]
+
+[^21]: Just to mention some: File_MARC [http://pear.php.net/package/File_MARC/], marc4j [https://github.com/marc4j/marc4j], MARC::Record [https://metacpan.org/pod/MARC::Record], ruby-marc [https://github.com/ruby-marc/ruby-marc]
+
+[^22]: See MARC21 as Data: A Start by Karen Coyle [http://journal.code4lib.org/articles/5468] and  Interpreting MARC: Where’s the Bibliographic Data? by Jason Thomale [http://journal.code4lib.org/articles/3832]
